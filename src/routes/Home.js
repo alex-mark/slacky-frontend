@@ -2,13 +2,13 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-const Home = ({ data: { loading, allUsers } }) =>
-  (loading ? null : allUsers.map(u => <h1 key={u.id}>{u.email}</h1>));
+const Home = ({ data: { allUsers = [] } }) =>
+  allUsers.map(u => <h1 key={u.id}>{u.email}</h1>);
 
 const allUsersQuery = gql`
   query {
     allUsers {
-      id,
+      id
       email
     }
   }
