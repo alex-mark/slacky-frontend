@@ -60,7 +60,7 @@ class Register extends Component {
     
     return (
       <Container text>
-        <Header as="h2">Register Form</Header>
+        <Header as="h2">Register</Header>
         <Input
           error={!!usernameError}
           name="username"
