@@ -8,28 +8,61 @@ const ChannelWrapper = styled.div`
   color: #958993;
 `;
 
-const channel = ({ id, name }) => <li key={`channel-${id}`}># {name}</li>;
-const user = ({ id, name }) => <li key={`user-${id}`}>{name}</li>;
+const TeamNameHeader = styled.h1`
+  color: #fff;
+  font-size: 20px;
+`;
+
+const SideBarList = styled.ul`
+  width: 100%;
+  list-style: none;
+  padding-left: 0;
+`;
+
+const paddingLeft = 'padding-left: 10px';
+
+const SideBarListHeader = styled.li`${paddingLeft};`;
+const SideBarListItem = styled.li`
+  padding: 2px;
+  ${paddingLeft};
+  &:hover {
+    background: #3e313c;
+  }
+`;
+
+const PushRight = styled.div`${paddingLeft}`;
+
+const channel = ({ id, name }) => <SideBarListItem key={`channel-${id}`}># {name}</SideBarListItem>;
+
+const Green = styled.span`color: #38978d;`;
+
+const Bubble = ({ on = true }) => (on ? <Green>●</Green> : '○');
+
+const user = ({ id, name }) => (
+  <SideBarListItem key={`user-${id}`}>
+    <Bubble /> {name}
+  </SideBarListItem>
+);
 
 export default ({
   teamName, username, channels, users,
 }) => (
   <ChannelWrapper>
-    <div>
-      {teamName}
+    <PushRight>
+      <TeamNameHeader>{teamName}</TeamNameHeader>
       {username}
-    </div>
+    </PushRight>
     <div>
-      <ul>
-        <li>Channels</li>
+      <SideBarList>
+        <SideBarListHeader>Channels</SideBarListHeader>
         {channels.map(channel)}
-      </ul>
+      </SideBarList>
     </div>
     <div>
-      <ul>
-        <li>Direct messages</li>
+      <SideBarList>
+        <SideBarListHeader>Direct messages</SideBarListHeader>
         {users.map(user)}
-      </ul>
+      </SideBarList>
     </div>
   </ChannelWrapper>
 );
