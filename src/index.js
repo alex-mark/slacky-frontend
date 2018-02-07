@@ -30,9 +30,11 @@ const authMiddleware = setContext((_, { headers }) => {
 const afterwareLink = new ApolloLink((operation, forward) => {
   const { headers } = operation.getContext();
 
+  console.log('afterware', headers);
   if (headers) {
     const token = headers.get('x-token');
     const refreshToken = headers.get('x-refresh-token');
+    console.log(token, refreshToken);
 
     if (token) {
       localStorage.setItem('token', token);
