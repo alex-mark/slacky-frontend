@@ -13,24 +13,19 @@ import Routes from './routes';
 
 const httpLink = createHttpLink({ uri: 'http://localhost:8080/graphql' });
 
-const authMiddleware = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('token') || null;
-  const refreshToken = localStorage.getItem('refreshToken') || null;
+const middlewareAuth = setContext((_, { headers }) =>
   // return the headers to the context so httpLink can read them
-  return {
+  ({
     headers: {
       ...headers,
-      'x-token': token,
-      'x-refresh-token': refreshToken,
+      'x-token': localStorage.getItem('token') || null,
+      'x-refresh-token': localStorage.getItem('refreshToken') || null,
     },
-  };
-});
+  }));
 
 const afterwareLink = new ApolloLink((operation, forward) => {
   const { headers } = operation.getContext();
 
-  console.log('afterware', headers);
   if (headers) {
     const token = headers.get('x-token');
     const refreshToken = headers.get('x-refresh-token');
@@ -49,11 +44,7 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 });
 
 const client = new ApolloClient({
-  link: from([
-    afterwareLink,
-    authMiddleware,
-    httpLink,
-  ]),
+  link: from([afterwareLink, middlewareAuth, httpLink]),
   cache: new InMemoryCache(),
 });
 
