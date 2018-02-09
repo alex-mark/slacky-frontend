@@ -7,7 +7,7 @@ import Messages from '../components/Messages';
 import SendMessage from '../components/SendMessage';
 import Sidebar from '../containers/Sidebar';
 
-const ViewTeam = ({match: { params } }) => (
+const ViewTeam = ({ match: { params } }) => (
   <AppLayout>
     <Sidebar currentTeamId={params.teamId} />
     <Header channelName="general" />
