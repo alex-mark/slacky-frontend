@@ -1,11 +1,11 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import decode from 'jwt-decode';
 
 import Teams from '../components/Teams';
 import Channels from '../components/Channels';
 import AddChannelModal from '../components/AddChannelModal';
+import { allTeamsQuery } from '../graphql/team';
 
 class Sidebar extends React.Component {
   state = {
@@ -51,6 +51,7 @@ class Sidebar extends React.Component {
         teamName={team.name}
         username={username}
         channels={team.channels}
+        teamId={team.id}
         users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
         onAddChannelClick={this.handleAddChannelClick}
       />,
@@ -63,17 +64,6 @@ class Sidebar extends React.Component {
     ];
   }
 }
-const allTeamsQuery = gql`
-  {
-    allTeams {
-      id
-      name
-      channels {
-        id
-        name
-      }
-    }
-  }
-`;
+
 
 export default graphql(allTeamsQuery)(Sidebar);

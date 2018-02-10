@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Icon } from 'semantic-ui-react';
 
@@ -37,7 +38,11 @@ const PushRight = styled.div`
   ${paddingLeft};
 `;
 
-const channel = ({ id, name }) => <SideBarListItem key={`channel-${id}`}># {name}</SideBarListItem>;
+const channel = ({ id, name }, teamId) => (
+  <Link to={`/view-team/${teamId}/${id}`} key={`channel-${id}`}>
+    <SideBarListItem># {name}</SideBarListItem>
+  </Link>
+);
 
 const Green = styled.span`
   color: #38978d;
@@ -52,7 +57,7 @@ const user = ({ id, name }) => (
 );
 
 export default ({
-  teamName, username, channels, users, onAddChannelClick,
+  teamName, username, channels, users, onAddChannelClick, teamId,
 }) => (
   <ChannelWrapper>
     <PushRight>
@@ -64,7 +69,7 @@ export default ({
         <SideBarListHeader>
           Channels <Icon onClick={onAddChannelClick} name="add circle" />
         </SideBarListHeader>
-        {channels.map(channel)}
+        {channels.map(c => channel(c, teamId))}
       </SideBarList>
     </div>
     <div>
