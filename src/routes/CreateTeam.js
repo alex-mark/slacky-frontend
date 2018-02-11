@@ -31,6 +31,7 @@ class CreateTeam extends Component {
     const { ok, team, errors } = response.data.createTeam;
 
     if (ok) {
+      console.log('push to viewteam')
       this.props.history.push(`/view-team/${team.id}`);
     } else {
       const err = {};
