@@ -9,7 +9,6 @@ import { allTeamsQuery } from '../graphql/team';
 const AddChannelModal = ({
   open,
   onClose,
-  teamId,
   values,
   handleChange,
   handleBlur,
