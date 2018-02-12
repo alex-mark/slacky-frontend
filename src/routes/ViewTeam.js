@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 import AppLayout from '../components/AppLayout';
 import Header from '../components/Header';
-import Messages from '../components/Messages';
+import MessageContainer from '../containers/MessageContainer';
 import SendMessage from '../components/SendMessage';
 import Sidebar from '../containers/Sidebar';
 import { allTeamsQuery } from '../graphql/team';
@@ -41,8 +41,8 @@ const ViewTeam = ({
         team={team}
       />
       {channel && <Header channelName={channel.name} />}
-      {channel && <Messages channelId={channel.id} />}
-      {channel && <SendMessage channelName={channel.name} />}
+      {channel && <MessageContainer channelId={channel.id} />}
+      {channel && <SendMessage channelName={channel.name} channelId={channel.id} />}
     </AppLayout>
   );
 };
