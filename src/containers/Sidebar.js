@@ -27,18 +27,8 @@ class Sidebar extends React.Component {
   };
 
   render() {
-    const { teams, team } = this.props;
+    const { teams, team, username } = this.props;
     const { openAddChannelModal, openInvitePeopleModal } = this.state;
-
-    let username = '';
-    let isOwner = false;
-    try {
-      const token = localStorage.getItem('token');
-      const { user } = decode(token);
-      // eslint-disable-next-line prefer-destructuring
-      username = user.username;
-      isOwner = user.id === team.owner;
-    } catch (err) {}
 
     return [
       <Teams key="team-sidebar" teams={teams} />,
@@ -48,7 +38,7 @@ class Sidebar extends React.Component {
         username={username}
         channels={team.channels}
         teamId={team.id}
-        isOwner={isOwner}
+        isOwner={team.admin}
         users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
         onAddChannelClick={this.toggleAddChannelModal}
         onInvitePeopleClick={this.toggleInvitePeopleModal}
