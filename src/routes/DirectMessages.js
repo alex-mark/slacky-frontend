@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import AppLayout from '../components/AppLayout';
 import Header from '../components/Header';
-import MessageContainer from '../containers/MessageContainer';
+import DirectMessageContainer from '../containers/DirectMessageContainer';
 import SendMessage from '../components/SendMessage';
 import Sidebar from '../containers/Sidebar';
 import { meQuery } from '../graphql/team';
@@ -25,6 +25,7 @@ const ViewTeam = ({ mutate, data: { loading, me }, match: { params: { teamId, us
   const teamIdx = teamIdInteger ? teams.findIndex(t => t.id === teamIdInteger) : 0;
   const team = teamIdx === -1 ? teams[0] : teams[teamIdx];
 
+  console.log(team.id, userId);
   return (
     <AppLayout>
       <Sidebar
@@ -35,20 +36,32 @@ const ViewTeam = ({ mutate, data: { loading, me }, match: { params: { teamId, us
         team={team}
         username={username}
       />
-      {/* <Header channelName={channel.name} />
-      <MessageContainer channelId={channel.id} /> */}
-      <SendMessage onSubmit={() => {}} placeholder={userId} />
+      <Header channelName="Someone's username" />
+      <DirectMessageContainer teamId={team.id} userId={userId} />
+      <SendMessage
+        onSubmit={async (text) => {
+          const response = await mutate({
+            variables: {
+              text,
+              receiverId: userId,
+              teamId,
+            },
+          });
+          console.log(response);
+        }}
+        placeholder={userId}
+      />
     </AppLayout>
   );
 };
 
-const createMessageMutation = gql`
-  mutation($channelId: Int!, $text: String!) {
-    createMessage(channelId: $channelId, text: $text)
+const createDirectMessageMutation = gql`
+  mutation($receiverId: Int!, $text: String!, $teamId: Int!) {
+    createDirectMessage(receiverId: $receiverId, text: $text, teamId: $teamId)
   }
 `;
 
 export default compose(
   graphql(meQuery, { options: { fetchPolicy: 'network-only' } }),
-  graphql(createMessageMutation),
+  graphql(createDirectMessageMutation),
 )(ViewTeam);
