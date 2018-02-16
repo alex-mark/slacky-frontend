@@ -50,10 +50,12 @@ const Green = styled.span`
 
 const Bubble = ({ on = true }) => (on ? <Green>●</Green> : '○');
 
-const user = ({ id, name }) => (
-  <SideBarListItem key={`user-${id}`}>
-    <Bubble /> {name}
-  </SideBarListItem>
+const user = ({ id, username }, teamId) => (
+  <Link to={`/view-team/user/${teamId}/${id}`} key={`user-${id}`}>
+    <SideBarListItem>
+      <Bubble /> {username}
+    </SideBarListItem>
+  </Link>
 );
 
 export default ({
@@ -82,8 +84,10 @@ export default ({
     </div>
     <div>
       <SideBarList>
-        <SideBarListHeader>Direct messages <Icon onClick={onDirectMessageClick} name="add circle" /></SideBarListHeader>
-        {users.map(user)}
+        <SideBarListHeader>
+          Direct messages <Icon onClick={onDirectMessageClick} name="add circle" />
+        </SideBarListHeader>
+        {users.map(u => user(u, teamId))}
       </SideBarList>
     </div>
 
